@@ -10,6 +10,10 @@ env:
   JAVA_VERSION: '21'
   MAVEN_OPTS: -Xmx1024m
 
+# Ensure the workflow GITHUB_TOKEN has permission to create releases and write repo contents
+permissions:
+  contents: write
+
 jobs:
   
   # Job 1: Build and Test
@@ -286,8 +290,10 @@ jobs:
       
     - name: Create Release
       uses: actions/create-release@v1
+      # Use a PAT stored in repo secrets to ensure the token has sufficient permissions.
+      # Create a secret named RELEASE_TOKEN with a Personal Access Token (repo scope) in repository settings.
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         tag_name: v${{ steps.version.outputs.version }}
         release_name: Release v${{ steps.version.outputs.version }}
