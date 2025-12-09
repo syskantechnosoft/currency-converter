@@ -46,24 +46,16 @@ jobs:
     - name: Run Unit Tests
       run: mvn test
       
-    - name: Generate Test Report (using PAT if available)
-      if: ${{ secrets.RELEASE_TOKEN != '' }}
+    - name: Generate Test Report
       uses: dorny/test-reporter@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        # Use the repository PAT if provided, otherwise fall back to the default github token
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || github.token }}
       with:
         name: Unit Test Results
         path: target/surefire-reports/*.xml
         reporter: java-junit
 
-    - name: Generate Test Report (using GITHUB_TOKEN)
-      if: ${{ secrets.RELEASE_TOKEN == '' }}
-      uses: dorny/test-reporter@v1
-      with:
-        name: Unit Test Results
-        path: target/surefire-reports/*.xml
-        reporter: java-junit
-        
     - name: Upload Test Results
       if: always()
       uses: actions/upload-artifact@v4
