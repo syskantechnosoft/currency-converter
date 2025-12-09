@@ -1,22 +1,41 @@
 # Multi-stage build for optimized image size
 
 # Stage 1: Build
-FROM eclipse-temurin:21-jdk-alpine AS build
+# FROM eclipse-temurin:21-jdk-alpine AS build
 
-WORKDIR /app
+# WORKDIR /app
 
 # Copy Maven wrapper and pom.xml
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
+# COPY .mvn/ .mvn
+# COPY mvnw pom.xml ./
 
 # Download dependencies (cached layer)
-RUN ./mvnw dependency:go-offline
+# RUN ./mvnw dependency:go-offline
 
 # Copy source code
-COPY src ./src
+# COPY src ./src
 
 # Build application
-RUN ./mvnw clean package -DskipTests
+# RUN ./mvnw clean package -DskipTests
+
+# Build stage
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+
+COPY pom.xml ./
+RUN mvn -B dependency:go-offline
+
+COPY src ./src
+RUN mvn -B package -DskipTests
+
+# # Runtime stage
+# FROM eclipse-temurin:21-jre
+# WORKDIR /app
+# COPY --from=build /app/target/currency-converter-0.0.1-SNAPSHOT.jar app.jar
+
+# EXPOSE 8080
+# ENTRYPOINT ["java", "-jar", "app.jar"]
+
 
 # Stage 2: Runtime
 FROM eclipse-temurin:21-jre-alpine
