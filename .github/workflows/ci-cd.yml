@@ -12,7 +12,8 @@ env:
 
 # Ensure the workflow GITHUB_TOKEN has permission to create releases and write repo contents
 permissions:
-  contents: write
+  checks: write
+  contents: read
 
 jobs:
   
@@ -45,8 +46,18 @@ jobs:
     - name: Run Unit Tests
       run: mvn test
       
-    - name: Generate Test Report
-      if: always()
+    - name: Generate Test Report (using PAT if available)
+      if: ${{ secrets.RELEASE_TOKEN != '' }}
+      uses: dorny/test-reporter@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        name: Unit Test Results
+        path: target/surefire-reports/*.xml
+        reporter: java-junit
+
+    - name: Generate Test Report (using GITHUB_TOKEN)
+      if: ${{ secrets.RELEASE_TOKEN == '' }}
       uses: dorny/test-reporter@v1
       with:
         name: Unit Test Results
