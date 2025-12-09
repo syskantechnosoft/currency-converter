@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .result-value {
+            color: #333;
+            font-weight: 700;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .currency-symbol {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💱 Currency Converter</h1>
+
+        <div th:if="${error}" class="alert alert-error">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success">
+            ✓ Conversion successful!
+        </div>
+
+        <form th:action="@{/convert}" th:object="${conversionRequest}" method="post">
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" 
+                       id="amount" 
+                       th:field="*{amount}" 
+                       step="0.01" 
+                       placeholder="Enter amount"
+                       data-testid="amount-input">
+                <div class="error" th:if="${#fields.hasErrors('amount')}" 
+                     th:errors="*{amount}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="fromCurrency">From Currency</label>
+                <select id="fromCurrency" 
+                        th:field="*{fromCurrency}"
+                        data-testid="from-currency">
+                    <option value="">Select currency</option>
+                    <option th:each="currency : ${currencies}" 
+                            th:value="${currency.key}" 
+                            th:text="${currency.key + ' - ' + currency.value}">
+                    </option>
+                </select>
+                <div class="error" th:if="${#fields.hasErrors('fromCurrency')}" 
+                     th:errors="*{fromCurrency}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="toCurrency">To Currency</label>
+                <select id="toCurrency" 
+                        th:field="*{toCurrency}"
+                        data-testid="to-currency">
+                    <option value="">Select currency</option>
+                    <option th:each="currency : ${currencies}" 
+                            th:value="${currency.key}" 
+                            th:text="${currency.key + ' - ' + currency.value}">
+                    </option>
+                </select>
+                <div class="error" th:if="${#fields.hasErrors('toCurrency')}" 
+                     th:errors="*{toCurrency}"></div>
+            </div>
+
+            <button type="submit" class="btn" data-testid="convert-button">
+                Convert
+            </button>
+        </form>
+
+        <div th:if="${response}" class="result" data-testid="result">
+            <div class="result-item">
+                <span class="result-label">From:</span>
+                <span class="result-value" th:text="${response.amount + ' ' + response.fromCurrency}"></span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">To:</span>
+                <span class="result-value" 
+                      th:text="${response.convertedAmount + ' ' + response.toCurrency}"
+                      data-testid="converted-amount"></span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Exchange Rate:</span>
+                <span class="result-value" th:text="${response.exchangeRate}"></span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Timestamp:</span>
+                <span class="result-value" th:text="${#temporals.format(response.timestamp, 'dd-MM-yyyy HH:mm:ss')}"></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
