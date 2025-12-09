@@ -73,71 +73,38 @@ A modern Spring Boot 3.x monolithic application built with JDK 21 for converting
 currency-converter/
 
 ├── src/
-
 │   ├── main/
-
 │   │   ├── java/
-
 │   │   │   └── com/example/currencyconverter/
-
 │   │   │       ├── CurrencyConverterApplication.java
-
 │   │   │       ├── controller/
-
 │   │   │       │   ├── CurrencyController.java
-
 │   │   │       │   └── WebController.java
-
 │   │   │       ├── model/
-
 │   │   │       │   ├── ConversionRequest.java
-
 │   │   │       │   ├── ConversionResponse.java
-
 │   │   │       │   └── ExchangeRateResponse.java
-
 │   │   │       └── service/
-
 │   │   │           └── CurrencyService.java
-
 │   │   └── resources/
-
 │   │       ├── application.yml
-
 │   │       ├── templates/
-
 │   │       │   └── index.html
-
 │   │       └── static/
-
 │   └── test/
-
 │       └── java/
-
 │           └── com/example/currencyconverter/
-
 │               ├── service/
-
 │               │   └── CurrencyServiceTest.java
-
 │               ├── controller/
-
 │               │   └── CurrencyControllerTest.java
-
 │               └── e2e/
-
 │                   └── CurrencyConverterE2ETest.java
-
 ├── Dockerfile
-
 ├── docker-compose.yml
-
 ├── .dockerignore
-
 ├── .gitignore
-
 ├── pom.xml
-
 └── README.md
 
 ```
@@ -322,11 +289,11 @@ Content-Type: application/json
 
 {
 
-&nbsp; "fromCurrency": "USD",
+ "fromCurrency": "USD",
 
-&nbsp; "toCurrency": "EUR",
+ "toCurrency": "EUR",
 
-&nbsp; "amount": 100.00
+ "amount": 100.00
 
 }
 
@@ -340,13 +307,13 @@ Content-Type: application/json
 
 {
 
-&nbsp; "fromCurrency": "USD",
+ "fromCurrency": "USD",
 
-&nbsp; "toCurrency": "EUR",
+ "toCurrency": "EUR",
 
-&nbsp; "amount": 100.00,
+ "amount": 100.00,
 
-&nbsp; "convertedAmount": 85.00,
+ "convertedAmount": 85.00,
 
 &nbsp; "exchangeRate": 0.85,
 
@@ -440,11 +407,11 @@ docker build -t currency-converter:latest .
 
 docker run -d \\
 
-&nbsp; -p 8080:8080 \\
+ -p 8080:8080 \\
 
-&nbsp; --name currency-converter \\
+ --name currency-converter \\
 
-&nbsp; currency-converter:latest
+ currency-converter:latest
 
 ```
 
@@ -508,11 +475,11 @@ The project includes a comprehensive GitHub Actions workflow that:
 
 1\. Add secrets to your GitHub repository:
 
-&nbsp;  - `DOCKER\_USERNAME`: Docker Hub username
+  - `DOCKER\_USERNAME`: Docker Hub username
 
-&nbsp;  - `DOCKER\_PASSWORD`: Docker Hub password/token
+  - `DOCKER\_PASSWORD`: Docker Hub password/token
 
-&nbsp;  - `SONAR\_TOKEN`: SonarCloud token (optional)
+  - `SONAR\_TOKEN`: SonarCloud token (optional)
 
 
 
@@ -548,25 +515,25 @@ Edit `src/main/resources/application.yml`:
 
 spring:
 
-&nbsp; application:
+ application:
 
-&nbsp;   name: currency-converter
+   name: currency-converter
 
-&nbsp;   
+   
 
 server:
 
-&nbsp; port: 8080
+ port: 8080
 
-&nbsp; 
+ 
 
 currency:
 
-&nbsp; api:
+ api:
 
-&nbsp;   base-url: https://api.exchangerate-api.com/v4/latest
+   base-url: https://api.exchangerate-api.com/v4/latest
 
-&nbsp;   timeout: 5000
+   timeout: 5000
 
 ```
 
@@ -620,30 +587,30 @@ Complete Package Includes:
 
 1. Core Application Files:
 
-✅ pom.xml - Maven configuration with JDK 21 and Spring Boot 3.4.0
-✅ application.yml - Application configuration
-✅ CurrencyConverterApplication.java - Main application class
-✅ Model classes (DTOs)
-✅ CurrencyService.java - Business logic
-✅ CurrencyController.java - REST API
-✅ WebController.java - Web UI controller
-✅ index.html - Responsive Thymeleaf template
+\✅ pom.xml - Maven configuration with JDK 21 and Spring Boot 3.4.0
+\✅ application.yml - Application configuration
+\✅ CurrencyConverterApplication.java - Main application class
+\✅ Model classes (DTOs)
+\✅ CurrencyService.java - Business logic
+\✅ CurrencyController.java - REST API
+\✅ WebController.java - Web UI controller
+\✅ index.html - Responsive Thymeleaf template
 
 2. Testing Suite:
 
-✅ CurrencyServiceTest.java - Unit tests with Mockito
-✅ CurrencyControllerTest.java - Integration tests with MockMvc
-✅ CurrencyConverterE2ETest.java - E2E tests with Playwright
+\✅ CurrencyServiceTest.java - Unit tests with Mockito
+\✅ CurrencyControllerTest.java - Integration tests with MockMvc
+\✅ CurrencyConverterE2ETest.java - E2E tests with Playwright
 
 3. Docker Configuration:
 
-✅ Dockerfile - Multi-stage build
-✅ docker-compose.yml - Container orchestration
-✅ .dockerignore - Docker ignore rules
+\✅ Dockerfile - Multi-stage build
+\✅ docker-compose.yml - Container orchestration
+\✅ .dockerignore - Docker ignore rules
 
 4. CI/CD Pipeline:
 
-✅ ci-cd.yml - Complete GitHub Actions workflow with:
+\✅ ci-cd.yml - Complete GitHub Actions workflow with:
 
 Build and unit tests
 Integration tests
@@ -657,9 +624,9 @@ Deployment automation
 
 5. Documentation:
 
-✅ README.md - Project overview and quick start
-✅ SETUP\_GUIDE.md - Detailed step-by-step implementation guide
-✅ .gitignore - Git ignore configuration
+\✅ README.md - Project overview and quick start
+\✅ SETUP\_GUIDE.md - Detailed step-by-step implementation guide
+\✅ .gitignore - Git ignore configuration
 
 🎯 Key Features:
 
@@ -691,6 +658,6 @@ docker-compose up
 
 # Access
 
-http://localhost:8080
+http://localhost:8085
 The application is fully functional, tested, containerized, and ready for production deployment with automated CI/CD!
 
