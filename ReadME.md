@@ -73,71 +73,38 @@ A modern Spring Boot 3.x monolithic application built with JDK 21 for converting
 currency-converter/
 
 ├── src/
-
 │   ├── main/
-
 │   │   ├── java/
-
 │   │   │   └── com/example/currencyconverter/
-
 │   │   │       ├── CurrencyConverterApplication.java
-
 │   │   │       ├── controller/
-
 │   │   │       │   ├── CurrencyController.java
-
 │   │   │       │   └── WebController.java
-
 │   │   │       ├── model/
-
 │   │   │       │   ├── ConversionRequest.java
-
 │   │   │       │   ├── ConversionResponse.java
-
 │   │   │       │   └── ExchangeRateResponse.java
-
 │   │   │       └── service/
-
 │   │   │           └── CurrencyService.java
-
 │   │   └── resources/
-
 │   │       ├── application.yml
-
 │   │       ├── templates/
-
 │   │       │   └── index.html
-
 │   │       └── static/
-
 │   └── test/
-
 │       └── java/
-
 │           └── com/example/currencyconverter/
-
 │               ├── service/
-
 │               │   └── CurrencyServiceTest.java
-
 │               ├── controller/
-
 │               │   └── CurrencyControllerTest.java
-
 │               └── e2e/
-
 │                   └── CurrencyConverterE2ETest.java
-
 ├── Dockerfile
-
 ├── docker-compose.yml
-
 ├── .dockerignore
-
 ├── .gitignore
-
 ├── pom.xml
-
 └── README.md
 
 ```
